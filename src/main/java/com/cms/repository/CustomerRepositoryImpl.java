@@ -23,7 +23,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public Customer findById(Long id) {
-        TypedQuery<Customer> query = entityManager.createQuery("select c from Customer where c.id=:id", Customer.class);
+        TypedQuery<Customer> query = entityManager.createQuery("select c from Customer c where c.id=:id", Customer.class);
         query.setParameter("id", id);
         try {
             return query.getSingleResult();
