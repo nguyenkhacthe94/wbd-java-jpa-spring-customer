@@ -1,14 +1,15 @@
 package com.cms.service;
 import com.cms.model.Customer;
-
-import java.util.List;
+import com.cms.model.Province;
 
 public interface CustomerService {
-    List<Customer> findAll();
+    Iterable<Customer> findAll();
 
     Customer findById(Long id);
 
     void save(Customer customer);
 
     void remove(Long id);
+
+    Iterable<Customer> findAllByProvince(Province province);
 }

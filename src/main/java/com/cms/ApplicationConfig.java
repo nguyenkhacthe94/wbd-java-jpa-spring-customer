@@ -1,9 +1,9 @@
 package com.cms;
 
-import com.cms.repository.CustomerRepository;
-import com.cms.repository.CustomerRepositoryImpl;
 import com.cms.service.CustomerService;
+import com.cms.service.ProvinceService;
 import com.cms.service.CustomerServiceImpl;
+import com.cms.service.ProvinceServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -34,6 +35,7 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
+@EnableJpaRepositories("com.cms.repository")
 @ComponentScan("com.cms")
 public class ApplicationConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
@@ -45,22 +47,21 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
     }
 
     @Bean
-    public CustomerRepository customerRepository(){
-        return new CustomerRepositoryImpl();
-    }
-
-    @Bean
     public CustomerService customerService(){
         return new CustomerServiceImpl();
     }
 
+    @Bean
+    public ProvinceService provinceService(){
+        return new ProvinceServiceImpl();
+    }
 
     //Thymeleaf Configuration
     @Bean
     public SpringResourceTemplateResolver templateResolver(){
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix("/view");
+        templateResolver.setPrefix("/WEB-INF/views");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         return templateResolver;
@@ -91,7 +92,7 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[]{"com.cms.model"});
+        em.setPackagesToScan(new String[]{"com.codegym.cms.model"});
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
